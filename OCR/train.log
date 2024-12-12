@@ -1,0 +1,212 @@
+[2024/12/12 17:37:16] ppocr INFO: Architecture : 
+[2024/12/12 17:37:16] ppocr INFO:     Backbone : 
+[2024/12/12 17:37:16] ppocr INFO:         name : PPLCNetV3
+[2024/12/12 17:37:16] ppocr INFO:         scale : 0.95
+[2024/12/12 17:37:16] ppocr INFO:     Head : 
+[2024/12/12 17:37:16] ppocr INFO:         head_list : 
+[2024/12/12 17:37:16] ppocr INFO:             CTCHead : 
+[2024/12/12 17:37:16] ppocr INFO:                 Head : 
+[2024/12/12 17:37:16] ppocr INFO:                     fc_decay : 1e-05
+[2024/12/12 17:37:16] ppocr INFO:                 Neck : 
+[2024/12/12 17:37:16] ppocr INFO:                     depth : 2
+[2024/12/12 17:37:16] ppocr INFO:                     dims : 120
+[2024/12/12 17:37:16] ppocr INFO:                     hidden_dims : 120
+[2024/12/12 17:37:16] ppocr INFO:                     kernel_size : [1, 3]
+[2024/12/12 17:37:16] ppocr INFO:                     name : svtr
+[2024/12/12 17:37:16] ppocr INFO:                     use_guide : True
+[2024/12/12 17:37:16] ppocr INFO:             NRTRHead : 
+[2024/12/12 17:37:16] ppocr INFO:                 max_text_length : 25
+[2024/12/12 17:37:16] ppocr INFO:                 nrtr_dim : 384
+[2024/12/12 17:37:16] ppocr INFO:         name : MultiHead
+[2024/12/12 17:37:16] ppocr INFO:     Transform : None
+[2024/12/12 17:37:16] ppocr INFO:     algorithm : SVTR_LCNet
+[2024/12/12 17:37:16] ppocr INFO:     model_type : rec
+[2024/12/12 17:37:16] ppocr INFO: Eval : 
+[2024/12/12 17:37:16] ppocr INFO:     dataset : 
+[2024/12/12 17:37:16] ppocr INFO:         data_dir : C:/Users/Makedonski ajvar/PaddleOCR/train_data
+[2024/12/12 17:37:16] ppocr INFO:         label_file_list : ['C:\\Users\\Makedonski ajvar\\PaddleOCR\\train_data\\rec\\rec_gt_test.txt']
+[2024/12/12 17:37:16] ppocr INFO:         name : SimpleDataSet
+[2024/12/12 17:37:16] ppocr INFO:         transforms : 
+[2024/12/12 17:37:16] ppocr INFO:             DecodeImage : 
+[2024/12/12 17:37:16] ppocr INFO:                 channel_first : False
+[2024/12/12 17:37:16] ppocr INFO:                 img_mode : BGR
+[2024/12/12 17:37:16] ppocr INFO:             MultiLabelEncode : 
+[2024/12/12 17:37:16] ppocr INFO:                 gtc_encode : NRTRLabelEncode
+[2024/12/12 17:37:16] ppocr INFO:             RecResizeImg : 
+[2024/12/12 17:37:16] ppocr INFO:                 image_shape : [3, 48, 320]
+[2024/12/12 17:37:16] ppocr INFO:             KeepKeys : 
+[2024/12/12 17:37:16] ppocr INFO:                 keep_keys : ['image', 'label_ctc', 'label_gtc', 'length', 'valid_ratio']
+[2024/12/12 17:37:16] ppocr INFO:     loader : 
+[2024/12/12 17:37:16] ppocr INFO:         batch_size_per_card : 128
+[2024/12/12 17:37:16] ppocr INFO:         drop_last : False
+[2024/12/12 17:37:16] ppocr INFO:         num_workers : 4
+[2024/12/12 17:37:16] ppocr INFO:         shuffle : False
+[2024/12/12 17:37:16] ppocr INFO: Global : 
+[2024/12/12 17:37:16] ppocr INFO:     cal_metric_during_train : True
+[2024/12/12 17:37:16] ppocr INFO:     character_dict_path : C:\Users\Makedonski ajvar\PaddleOCR\ppocr\utils\en_dict.txt
+[2024/12/12 17:37:16] ppocr INFO:     checkpoints : None
+[2024/12/12 17:37:16] ppocr INFO:     debug : False
+[2024/12/12 17:37:16] ppocr INFO:     distributed : False
+[2024/12/12 17:37:16] ppocr INFO:     epoch_num : 50
+[2024/12/12 17:37:16] ppocr INFO:     eval_batch_step : [0, 2000]
+[2024/12/12 17:37:16] ppocr INFO:     infer_img : doc/imgs_words/ch/word_1.jpg
+[2024/12/12 17:37:16] ppocr INFO:     infer_mode : False
+[2024/12/12 17:37:16] ppocr INFO:     log_smooth_window : 20
+[2024/12/12 17:37:16] ppocr INFO:     max_text_length : 25
+[2024/12/12 17:37:16] ppocr INFO:     pretrained_model : C:\Users\Makedonski ajvar\Downloads\en_PP-OCRv4_rec_train\best_accuracy.pdparams
+[2024/12/12 17:37:16] ppocr INFO:     print_batch_step : 10
+[2024/12/12 17:37:16] ppocr INFO:     save_epoch_step : 10
+[2024/12/12 17:37:16] ppocr INFO:     save_inference_dir : None
+[2024/12/12 17:37:16] ppocr INFO:     save_model_dir : ./output/rec_ppocr_v4
+[2024/12/12 17:37:16] ppocr INFO:     save_res_path : ./output/rec/predicts_ppocrv3.txt
+[2024/12/12 17:37:16] ppocr INFO:     use_gpu : True
+[2024/12/12 17:37:16] ppocr INFO:     use_space_char : True
+[2024/12/12 17:37:16] ppocr INFO:     use_visualdl : False
+[2024/12/12 17:37:16] ppocr INFO: Loss : 
+[2024/12/12 17:37:16] ppocr INFO:     loss_config_list : 
+[2024/12/12 17:37:16] ppocr INFO:         CTCLoss : None
+[2024/12/12 17:37:16] ppocr INFO:         NRTRLoss : None
+[2024/12/12 17:37:16] ppocr INFO:     name : MultiLoss
+[2024/12/12 17:37:16] ppocr INFO: Metric : 
+[2024/12/12 17:37:16] ppocr INFO:     ignore_space : False
+[2024/12/12 17:37:16] ppocr INFO:     main_indicator : acc
+[2024/12/12 17:37:16] ppocr INFO:     name : RecMetric
+[2024/12/12 17:37:16] ppocr INFO: Optimizer : 
+[2024/12/12 17:37:16] ppocr INFO:     beta1 : 0.9
+[2024/12/12 17:37:16] ppocr INFO:     beta2 : 0.999
+[2024/12/12 17:37:16] ppocr INFO:     lr : 
+[2024/12/12 17:37:16] ppocr INFO:         learning_rate : 0.0005
+[2024/12/12 17:37:16] ppocr INFO:         name : Cosine
+[2024/12/12 17:37:16] ppocr INFO:         warmup_epoch : 5
+[2024/12/12 17:37:16] ppocr INFO:     name : Adam
+[2024/12/12 17:37:16] ppocr INFO:     regularizer : 
+[2024/12/12 17:37:16] ppocr INFO:         factor : 3e-05
+[2024/12/12 17:37:16] ppocr INFO:         name : L2
+[2024/12/12 17:37:16] ppocr INFO: PostProcess : 
+[2024/12/12 17:37:16] ppocr INFO:     name : CTCLabelDecode
+[2024/12/12 17:37:16] ppocr INFO: Train : 
+[2024/12/12 17:37:16] ppocr INFO:     dataset : 
+[2024/12/12 17:37:16] ppocr INFO:         data_dir : C:/Users/Makedonski ajvar/PaddleOCR/train_data
+[2024/12/12 17:37:16] ppocr INFO:         ds_width : False
+[2024/12/12 17:37:16] ppocr INFO:         ext_op_transform_idx : 1
+[2024/12/12 17:37:16] ppocr INFO:         label_file_list : ['C:\\Users\\Makedonski ajvar\\PaddleOCR\\train_data\\rec\\rec_gt_train.txt']
+[2024/12/12 17:37:16] ppocr INFO:         name : MultiScaleDataSet
+[2024/12/12 17:37:16] ppocr INFO:         transforms : 
+[2024/12/12 17:37:16] ppocr INFO:             DecodeImage : 
+[2024/12/12 17:37:16] ppocr INFO:                 channel_first : False
+[2024/12/12 17:37:16] ppocr INFO:                 img_mode : BGR
+[2024/12/12 17:37:16] ppocr INFO:             RecConAug : 
+[2024/12/12 17:37:16] ppocr INFO:                 ext_data_num : 2
+[2024/12/12 17:37:16] ppocr INFO:                 image_shape : [48, 320, 3]
+[2024/12/12 17:37:16] ppocr INFO:                 max_text_length : 25
+[2024/12/12 17:37:16] ppocr INFO:                 prob : 0.5
+[2024/12/12 17:37:16] ppocr INFO:             RecAug : None
+[2024/12/12 17:37:16] ppocr INFO:             MultiLabelEncode : 
+[2024/12/12 17:37:16] ppocr INFO:                 gtc_encode : NRTRLabelEncode
+[2024/12/12 17:37:16] ppocr INFO:             KeepKeys : 
+[2024/12/12 17:37:16] ppocr INFO:                 keep_keys : ['image', 'label_ctc', 'label_gtc', 'length', 'valid_ratio']
+[2024/12/12 17:37:16] ppocr INFO:     loader : 
+[2024/12/12 17:37:16] ppocr INFO:         batch_size_per_card : 96
+[2024/12/12 17:37:16] ppocr INFO:         drop_last : True
+[2024/12/12 17:37:16] ppocr INFO:         num_workers : 8
+[2024/12/12 17:37:16] ppocr INFO:         shuffle : True
+[2024/12/12 17:37:16] ppocr INFO:     sampler : 
+[2024/12/12 17:37:16] ppocr INFO:         divided_factor : [8, 16]
+[2024/12/12 17:37:16] ppocr INFO:         first_bs : 96
+[2024/12/12 17:37:16] ppocr INFO:         fix_bs : False
+[2024/12/12 17:37:16] ppocr INFO:         is_training : True
+[2024/12/12 17:37:16] ppocr INFO:         name : MultiScaleSampler
+[2024/12/12 17:37:16] ppocr INFO:         scales : [[320, 32], [320, 48], [320, 64]]
+[2024/12/12 17:37:16] ppocr INFO: profiler_options : None
+[2024/12/12 17:37:16] ppocr INFO: train with paddle 2.6.1 and device Place(gpu:0)
+[2024/12/12 17:37:16] ppocr INFO: Initialize indexs of datasets:['C:\\Users\\Makedonski ajvar\\PaddleOCR\\train_data\\rec\\rec_gt_train.txt']
+[2024/12/12 17:37:16] ppocr INFO: Initialize indexs of datasets:['C:\\Users\\Makedonski ajvar\\PaddleOCR\\train_data\\rec\\rec_gt_test.txt']
+[2024/12/12 17:37:16] ppocr INFO: train dataloader has 6 iters
+[2024/12/12 17:37:16] ppocr INFO: valid dataloader has 1 iters
+[2024/12/12 17:37:17] ppocr WARNING: The shape of model params head.ctc_head.fc.weight [120, 10] not matched with loaded params head.ctc_head.fc.weight [120, 97] !
+[2024/12/12 17:37:17] ppocr WARNING: The shape of model params head.ctc_head.fc.bias [10] not matched with loaded params head.ctc_head.fc.bias [97] !
+[2024/12/12 17:37:17] ppocr WARNING: The shape of model params head.gtc_head.embedding.embedding.weight [14, 384] not matched with loaded params head.gtc_head.embedding.embedding.weight [101, 384] !
+[2024/12/12 17:37:17] ppocr WARNING: The shape of model params head.gtc_head.tgt_word_prj.weight [384, 14] not matched with loaded params head.gtc_head.tgt_word_prj.weight [384, 101] !
+[2024/12/12 17:37:17] ppocr INFO: load pretrain successful from C:\Users\Makedonski ajvar\Downloads\en_PP-OCRv4_rec_train\best_accuracy
+[2024/12/12 17:37:17] ppocr INFO: During the training process, after the 0th iteration, an evaluation is run every 2000 iterations
+[2024/12/12 17:37:46] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:38:13] ppocr INFO: epoch: [2/50], global_step: 10, lr: 0.000075, acc: 0.000000, norm_edit_dis: 0.075561, CTCLoss: 82.728096, NRTRLoss: 2.587790, loss: 85.204586, avg_reader_cost: 0.25502 s, avg_batch_cost: 5.61143 s, avg_samples: 72.0, ips: 12.83094 samples/s, eta: 0:27:01, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:38:13] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:38:41] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:39:07] ppocr INFO: epoch: [4/50], global_step: 20, lr: 0.000158, acc: 0.000000, norm_edit_dis: 0.079674, CTCLoss: 80.072128, NRTRLoss: 2.103930, loss: 82.179714, avg_reader_cost: 0.33711 s, avg_batch_cost: 5.46197 s, avg_samples: 72.0, ips: 13.18205 samples/s, eta: 0:25:33, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:39:08] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:39:35] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:40:02] ppocr INFO: epoch: [6/50], global_step: 30, lr: 0.000325, acc: 0.000000, norm_edit_dis: 0.131209, CTCLoss: 65.924915, NRTRLoss: 1.876333, loss: 67.805687, avg_reader_cost: 0.30250 s, avg_batch_cost: 5.45933 s, avg_samples: 72.0, ips: 13.18844 samples/s, eta: 0:24:20, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:40:02] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:40:30] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:40:57] ppocr INFO: epoch: [8/50], global_step: 40, lr: 0.000491, acc: 0.062500, norm_edit_dis: 0.245111, CTCLoss: 46.308575, NRTRLoss: 1.404996, loss: 47.680075, avg_reader_cost: 0.33909 s, avg_batch_cost: 5.47195 s, avg_samples: 72.0, ips: 13.15802 samples/s, eta: 0:23:11, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:40:57] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:41:25] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:41:51] ppocr INFO: epoch: [10/50], global_step: 50, lr: 0.000499, acc: 0.106771, norm_edit_dis: 0.337423, CTCLoss: 32.011642, NRTRLoss: 1.093440, loss: 33.078999, avg_reader_cost: 0.30795 s, avg_batch_cost: 5.44164 s, avg_samples: 72.0, ips: 13.23129 samples/s, eta: 0:22:02, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:41:52] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:41:52] ppocr INFO: save model in ./output/rec_ppocr_v4\iter_epoch_10
+[2024/12/12 17:42:21] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:42:47] ppocr INFO: epoch: [12/50], global_step: 60, lr: 0.000495, acc: 0.322917, norm_edit_dis: 0.480845, CTCLoss: 20.566990, NRTRLoss: 0.805150, loss: 21.339665, avg_reader_cost: 0.39022 s, avg_batch_cost: 5.55559 s, avg_samples: 72.0, ips: 12.95991 samples/s, eta: 0:20:59, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:42:47] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:43:14] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:43:41] ppocr INFO: epoch: [14/50], global_step: 70, lr: 0.000488, acc: 0.419271, norm_edit_dis: 0.559276, CTCLoss: 13.571061, NRTRLoss: 0.669041, loss: 14.261057, avg_reader_cost: 0.30318 s, avg_batch_cost: 5.42052 s, avg_samples: 72.0, ips: 13.28286 samples/s, eta: 0:19:51, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:43:41] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:44:08] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:44:35] ppocr INFO: epoch: [16/50], global_step: 80, lr: 0.000479, acc: 0.458333, norm_edit_dis: 0.596354, CTCLoss: 9.159027, NRTRLoss: 0.620120, loss: 9.764636, avg_reader_cost: 0.33585 s, avg_batch_cost: 5.39186 s, avg_samples: 72.0, ips: 13.35346 samples/s, eta: 0:18:42, max_mem_reserved: 11822 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:44:35] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:45:03] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:45:28] ppocr INFO: epoch: [18/50], global_step: 90, lr: 0.000467, acc: 0.473958, norm_edit_dis: 0.590278, CTCLoss: 6.957622, NRTRLoss: 0.611775, loss: 7.574759, avg_reader_cost: 0.30145 s, avg_batch_cost: 5.36171 s, avg_samples: 72.0, ips: 13.42855 samples/s, eta: 0:17:34, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:45:29] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:45:56] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:46:23] ppocr INFO: epoch: [20/50], global_step: 100, lr: 0.000453, acc: 0.473958, norm_edit_dis: 0.595486, CTCLoss: 5.824804, NRTRLoss: 0.606673, loss: 6.427372, avg_reader_cost: 0.34408 s, avg_batch_cost: 5.49945 s, avg_samples: 72.0, ips: 13.09223 samples/s, eta: 0:16:29, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:46:24] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:46:24] ppocr INFO: save model in ./output/rec_ppocr_v4\iter_epoch_20
+[2024/12/12 17:46:52] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:47:19] ppocr INFO: epoch: [22/50], global_step: 110, lr: 0.000437, acc: 0.479167, norm_edit_dis: 0.616537, CTCLoss: 4.966827, NRTRLoss: 0.601943, loss: 5.566480, avg_reader_cost: 0.34674 s, avg_batch_cost: 5.57872 s, avg_samples: 72.0, ips: 12.90618 samples/s, eta: 0:15:25, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:47:20] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:47:47] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:48:14] ppocr INFO: epoch: [24/50], global_step: 120, lr: 0.000418, acc: 0.486979, norm_edit_dis: 0.620660, CTCLoss: 4.379450, NRTRLoss: 0.591291, loss: 4.968368, avg_reader_cost: 0.33805 s, avg_batch_cost: 5.46423 s, avg_samples: 72.0, ips: 13.17661 samples/s, eta: 0:14:19, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:48:14] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:48:41] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:49:08] ppocr INFO: epoch: [26/50], global_step: 130, lr: 0.000398, acc: 0.486979, norm_edit_dis: 0.635417, CTCLoss: 3.929365, NRTRLoss: 0.592734, loss: 4.519902, avg_reader_cost: 0.30544 s, avg_batch_cost: 5.37517 s, avg_samples: 72.0, ips: 13.39493 samples/s, eta: 0:13:12, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:49:08] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:49:36] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:50:03] ppocr INFO: epoch: [28/50], global_step: 140, lr: 0.000376, acc: 0.484375, norm_edit_dis: 0.644965, CTCLoss: 3.689631, NRTRLoss: 0.591647, loss: 4.281952, avg_reader_cost: 0.33699 s, avg_batch_cost: 5.54424 s, avg_samples: 72.0, ips: 12.98645 samples/s, eta: 0:12:08, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:50:04] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:50:31] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:50:58] ppocr INFO: epoch: [30/50], global_step: 150, lr: 0.000353, acc: 0.489583, norm_edit_dis: 0.654514, CTCLoss: 3.341904, NRTRLoss: 0.586645, loss: 3.935320, avg_reader_cost: 0.30554 s, avg_batch_cost: 5.50006 s, avg_samples: 72.0, ips: 13.09077 samples/s, eta: 0:11:02, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:50:59] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:50:59] ppocr INFO: save model in ./output/rec_ppocr_v4\iter_epoch_30
+[2024/12/12 17:51:27] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:51:54] ppocr INFO: epoch: [32/50], global_step: 160, lr: 0.000328, acc: 0.500000, norm_edit_dis: 0.660652, CTCLoss: 3.185327, NRTRLoss: 0.586563, loss: 3.781131, avg_reader_cost: 0.38460 s, avg_batch_cost: 5.60948 s, avg_samples: 72.0, ips: 12.83542 samples/s, eta: 0:09:57, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:51:55] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:52:22] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:52:49] ppocr INFO: epoch: [34/50], global_step: 170, lr: 0.000303, acc: 0.500000, norm_edit_dis: 0.677083, CTCLoss: 3.082423, NRTRLoss: 0.587967, loss: 3.670246, avg_reader_cost: 0.30211 s, avg_batch_cost: 5.43895 s, avg_samples: 72.0, ips: 13.23786 samples/s, eta: 0:08:51, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:52:49] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:53:16] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:53:42] ppocr INFO: epoch: [36/50], global_step: 180, lr: 0.000277, acc: 0.500000, norm_edit_dis: 0.682292, CTCLoss: 2.886301, NRTRLoss: 0.586268, loss: 3.470907, avg_reader_cost: 0.33779 s, avg_batch_cost: 5.36982 s, avg_samples: 72.0, ips: 13.40827 samples/s, eta: 0:07:45, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:53:43] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:54:09] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:54:35] ppocr INFO: epoch: [38/50], global_step: 190, lr: 0.000251, acc: 0.513021, norm_edit_dis: 0.710938, CTCLoss: 2.797839, NRTRLoss: 0.585057, loss: 3.382550, avg_reader_cost: 0.30187 s, avg_batch_cost: 5.31327 s, avg_samples: 72.0, ips: 13.55097 samples/s, eta: 0:06:39, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:54:36] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:55:03] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:55:30] ppocr INFO: epoch: [40/50], global_step: 200, lr: 0.000225, acc: 0.500000, norm_edit_dis: 0.713542, CTCLoss: 2.711815, NRTRLoss: 0.584424, loss: 3.296895, avg_reader_cost: 0.33646 s, avg_batch_cost: 5.46160 s, avg_samples: 72.0, ips: 13.18295 samples/s, eta: 0:05:33, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:55:30] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:55:31] ppocr INFO: save model in ./output/rec_ppocr_v4\iter_epoch_40
+[2024/12/12 17:55:58] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:56:25] ppocr INFO: epoch: [42/50], global_step: 210, lr: 0.000199, acc: 0.500000, norm_edit_dis: 0.707899, CTCLoss: 2.610090, NRTRLoss: 0.584530, loss: 3.194110, avg_reader_cost: 0.34613 s, avg_batch_cost: 5.50716 s, avg_samples: 72.0, ips: 13.07388 samples/s, eta: 0:04:27, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:56:26] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:56:53] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:57:19] ppocr INFO: epoch: [44/50], global_step: 220, lr: 0.000174, acc: 0.520833, norm_edit_dis: 0.725347, CTCLoss: 2.578286, NRTRLoss: 0.584564, loss: 3.162197, avg_reader_cost: 0.33681 s, avg_batch_cost: 5.41996 s, avg_samples: 72.0, ips: 13.28424 samples/s, eta: 0:03:22, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:57:20] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:57:46] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:58:13] ppocr INFO: epoch: [46/50], global_step: 230, lr: 0.000150, acc: 0.520833, norm_edit_dis: 0.730903, CTCLoss: 2.456796, NRTRLoss: 0.584110, loss: 3.048531, avg_reader_cost: 0.30046 s, avg_batch_cost: 5.31344 s, avg_samples: 72.0, ips: 13.55055 samples/s, eta: 0:02:16, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:58:13] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:58:40] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:59:06] ppocr INFO: epoch: [48/50], global_step: 240, lr: 0.000126, acc: 0.520833, norm_edit_dis: 0.726563, CTCLoss: 2.427180, NRTRLoss: 0.584163, loss: 3.015255, avg_reader_cost: 0.33569 s, avg_batch_cost: 5.39836 s, avg_samples: 72.0, ips: 13.33738 samples/s, eta: 0:01:10, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 17:59:07] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 17:59:34] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 18:00:00] ppocr INFO: epoch: [50/50], global_step: 250, lr: 0.000104, acc: 0.541667, norm_edit_dis: 0.729818, CTCLoss: 2.396563, NRTRLoss: 0.584279, loss: 2.987115, avg_reader_cost: 0.30359 s, avg_batch_cost: 5.32799 s, avg_samples: 72.0, ips: 13.51353 samples/s, eta: 0:00:05, max_mem_reserved: 11906 MB, max_mem_allocated: 11703 MB
+[2024/12/12 18:00:00] ppocr INFO: save model in ./output/rec_ppocr_v4\latest
+[2024/12/12 18:00:01] ppocr INFO: save model in ./output/rec_ppocr_v4\iter_epoch_50
+[2024/12/12 18:00:01] ppocr INFO: best metric, acc: 0, is_float16: False
