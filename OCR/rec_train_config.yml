@@ -1,10 +1,10 @@
 Global:
   debug: false
   use_gpu: true
-  epoch_num: 50
+  epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_ppocr_v4
+  save_model_dir: ./output/test7
   save_epoch_step: 10
   eval_batch_step:
   - 0
@@ -107,7 +107,7 @@ Train:
       - 48
     - - 320
       - 64
-    first_bs: 96
+    first_bs: 32
     fix_bs: false
     divided_factor:
     - 8
@@ -115,7 +115,7 @@ Train:
     is_training: true
   loader:
     shuffle: true
-    batch_size_per_card: 96
+    batch_size_per_card: 32
     drop_last: true
     num_workers: 8
 Eval:
@@ -145,6 +145,6 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 128
+    batch_size_per_card: 32
     num_workers: 4
 profiler_options: null
