@@ -1,22 +1,38 @@
 #!/bin/bash
 
-# Arguments: input image path and output directory
-INPUT_IMAGE=$1
-OUTPUT_DIR=$2
+# Provjera ulaznih parametara
+if [ "$#" -ne 3 ]; then
+  echo "Usage: $0 <image_path> <txt_data_path> <output_csv>"
+  echo "Primjer: ./run_pipeline.sh testnaSlika.jpg input.txt final_output.csv"
+  exit 1
+fi
 
-# Ensure output directory exists
-mkdir -p $OUTPUT_DIR
+# Definiraj ulazne varijable
+IMAGE_PATH=$1
+TXT_DATA_PATH=$2
+OUTPUT_CSV=$3
 
-# Step 1: Run Object Detection
-echo "Running Object Detection..."
-python object_detection.py $INPUT_IMAGE $OUTPUT_DIR
+# Provjera postojanja Python skripte
+PIPELINE_SCRIPT="src/pipeline/merge_pipeline.py"
 
-# Step 2: Run OCR on Detected Regions
-echo "Running OCR..."
-python ocr_processing.py "$OUTPUT_DIR/detections.json" $OUTPUT_DIR
+if [ ! -f "$PIPELINE_SCRIPT" ]; then
+  echo "Greška: Python skripta $PIPELINE_SCRIPT nije pronađena!"
+  exit 1
+fi
 
-# Step 3: Generate Final Output CSV
-echo "Generating Final Output..."
-python generate_final_output.py "$OUTPUT_DIR/ocr_results.json" "$OUTPUT_DIR/final_output.csv"
+# Pokretanje pipeline-a
+echo "Pokrećem pipeline s parametrima:"
+echo "  Slika: $IMAGE_PATH"
+echo "  TXT podaci: $TXT_DATA_PATH"
+echo "  CSV izlaz: $OUTPUT_CSV"
 
-echo "Pipeline completed. Final output saved to $OUTPUT_DIR/final_output.csv"
+# Poziv Python pipeline skripte
+python3 "$PIPELINE_SCRIPT" "$IMAGE_PATH" "$TXT_DATA_PATH" "$OUTPUT_CSV"
+
+# Provjera je li CSV generiran
+if [ -f "$OUTPUT_CSV" ]; then
+  echo "Pipeline završen. CSV generiran na lokaciji: $OUTPUT_CSV"
+else
+  echo "Greška: CSV nije generiran. Provjeri pipeline."
+  exit 1
+fi
