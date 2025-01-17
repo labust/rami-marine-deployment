@@ -3,7 +3,7 @@ from bartul.ocr_processing import process_ocr
 from lucija.cr import color  # Funkcija za detekciju klase 1
 import csv
 
-def merge_pipeline(image_path, txt_data, output_csv):
+def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
     """
     Glavni pipeline koji integrira Lovrin, Bartulov i Lucijin dio.
     """
@@ -11,8 +11,8 @@ def merge_pipeline(image_path, txt_data, output_csv):
         # 1. Detekcija objekata (Lovrin model)
         detection_results = process_image(image_path)
 
-        # 2. OCR prepoznavanje (Bartulov model)
-        ocr_results = process_ocr(image_path)
+        # 2. OCR prepoznavanje (Bartulov model s lokalnim direktorijem)
+        ocr_results = process_ocr(image_path, model_dir=ocr_model_dir)
 
         # 3. Analiza boja za klasu 1 (Lucijin dio)
         class1_color = color(image_path, klasa=1)  # Dodavanje klase 1
@@ -49,5 +49,6 @@ def merge_pipeline(image_path, txt_data, output_csv):
 merge_pipeline(
     image_path="testnaSlika.jpg",
     txt_data="input.txt",
-    output_csv="final_output.csv"
+    output_csv="final_output.csv",
+    ocr_model_dir="path/to/local/ocr_model"
 )
