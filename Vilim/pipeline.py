@@ -12,7 +12,7 @@ def merge_pipeline(image_path, txt_data, output_csv):
         detection_results = process_image(image_path)
 
         # 2. OCR prepoznavanje (Bartulov model)
-        ocr_results = process_ocr(image_path, txt_data)
+        ocr_results = process_ocr(image_path)
 
         # 3. Analiza boja za klasu 1 (Lucijin dio)
         class1_color = color(image_path, klasa=1)  # Dodavanje klase 1
