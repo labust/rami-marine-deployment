@@ -1,4 +1,3 @@
-import os
 from paddleocr import PaddleOCR
 
 def process_ocr(cropped_image, model_dir):
