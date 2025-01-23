@@ -2,7 +2,7 @@ import cv2
 import os
 import numpy as np
 
-def color(photo,klasa)
+def color(photo,klasa):
 
     # Convert BGR (OpenCV default) to RGB
     image_rgb = cv2.cvtColor(photo, cv2.COLOR_BGR2RGB)
