@@ -15,26 +15,28 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
         ocr_results = process_ocr(image_path, model_dir=ocr_model_dir)
 
         # 3. Analiza boja za klasu 1 (Lucijin dio)
-        class1_color = color(image_path, klasa=1)  # Dodavanje klase 1
+        # Samo ako postoji klasa 1 među detekcijama
+        class1_color = None
+        for det in detection_results:
+            if det["class"] == 1:
+                class1_color = color(image_path, klasa=1)
+                break
 
         # Spajanje podataka prema klasi
         final_results = []
-        for ocr_entry in ocr_results:
-            for detection_entry in detection_results:
-                if ocr_entry["class_id"] == detection_entry["class"]:  # Usporedba klasa
-                    ocr_entry["centroid_x"] = detection_entry["cx"]
-                    ocr_entry["centroid_y"] = detection_entry["cy"]
-
-                    # Dodaj informacije o klasi 1 (ako je relevantno)
-                    if detection_entry["class"] == 1:
-                        ocr_entry["class1_color"] = class1_color
-
-                    final_results.append(ocr_entry)
-                    break
+        for det in detection_results:
+            result_entry = {
+                "timestamp": det["timestamp"],  # Vrijeme obrade
+                "class": det["class"],  # Klasa objekta
+                "instance": class1_color if det["class"] == 1 else "N/A",  # Samo za klasu 1
+                "centroid_x": det["cx"],
+                "centroid_y": det["cy"],
+            }
+            final_results.append(result_entry)
 
         # Generiranje CSV-a
         with open(output_csv, 'w', newline='') as f:
-            fieldnames = ["timestamp", "class_id", "ocr_value", "centroid_x", "centroid_y", "class1_color"]
+            fieldnames = ["timestamp", "class", "instance", "centroid_x", "centroid_y"]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(final_results)
@@ -43,12 +45,3 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
 
     except Exception as e:
         print(f"Greška u pipeline-u: {e}")
-
-
-# Primjer pokretanja pipeline-a
-merge_pipeline(
-    image_path="testnaSlika.jpg",
-    txt_data="input.txt",
-    output_csv="final_output.csv",
-    ocr_model_dir="path/to/local/ocr_model"
-)
