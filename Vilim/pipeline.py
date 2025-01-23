@@ -39,6 +39,19 @@ def merge_pipeline(image_path, ocr_model_dir, output_csv):
                     "centroid_x": det["cx"],
                     "centroid_y": det["cy"]
                 })
+if __name__ == "__main__":
+    # Putanje do ulaznih podataka
+    image_path = "testnaSlika.jpg"
+    ocr_model_dir = "C:/Users/Bartul/ocr_model"
+    output_csv = "final_output.csv"
+
+    # Poziv funkcije merge_pipeline
+    merge_pipeline(
+        image_path=image_path,
+        ocr_model_dir=ocr_model_dir,
+        output_csv=output_csv
+    )
+
 
         print(f"Pipeline completed. Output saved to {output_csv}")
 
