@@ -12,7 +12,7 @@ def pull_images_from_docker():
     subprocess.run(["docker", "run", "--name", "virtual_competition", "ramimarinerobots/virtual-competition-2023"], check=True)
 
     # Kopiraj slike iz kontejnera
-    subprocess.run(["docker", "cp", "virtual_competition:/data/images", "./local_images"], check=True)
+    subprocess.run(["docker", "cp", "virtual_competition:/home/rami/rami_marine_dataset", "./local_images"], check=True)
 
     # Provjeri jesu li slike preuzete
     if not os.path.exists("./local_images"):
@@ -26,12 +26,21 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
     """
     Glavni pipeline koji integrira Lovrin, Bartulov i Lucijin dio.
     """
+    print("haha")
     try:
         # 1. Detekcija objekata (Lovrin model)
-        detection_results = process_image(image_path)
+        try:
+            print(f"Pokrećem process_image za: {image_path}")
+            detection_results = process_image(image_path)
+            print("Rezultat detekcije objekata:", detection_results)
+        except Exception as e:
+            print(f"Greška u process_image: {e}")
+            raise  # Ponovno podiže grešku nakon ispisa
+
 
         # 2. OCR prepoznavanje (Bartulov model s lokalnim direktorijem)
         ocr_results = process_ocr(image_path, model_dir=ocr_model_dir)
+        print("ocr neki")
 
         # 3. Analiza boja za klasu 1 (Lucijin dio)
         # Samo ako postoji klasa 1 među detekcijama
@@ -68,7 +77,7 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
 if __name__ == "__main__":
     print("Ulazak u main blok")
     # Putanje do ulaznih podataka
-    image_path = "local_images/sample_image.jpg"  # Pretpostavljam da Docker povuče slike ovdje
+    image_path = "local_images/class_2/number_2/img_0025.png"  # Pretpostavljam da Docker povuče slike ovdje
     ocr_model_dir = "OCR/inference OCR model"  # Prilagoditi putanju
     output_csv = "final_output.csv"
 
