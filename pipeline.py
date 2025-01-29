@@ -4,8 +4,19 @@ from Lucija.cr import color  # Funkcija za detekciju klase 1
 import csv
 import subprocess
 import os
+import cv2
+import sys
 
 print("Početak programa")
+def classify_object(width, height):
+    """
+    Klasificira bounding box na temelju omjera visina/širina.
+    """
+    aspect_ratio = height / width
+    if aspect_ratio > 1.5 or aspect_ratio < 0.75:  # Prilagodi prag za ring pole
+        return "Ring Pole"
+    else:
+        return "Cross-shaped Valve"
 
 def pull_images_from_docker():
     # Pokreni Docker kontejner
@@ -20,7 +31,7 @@ def pull_images_from_docker():
     print("Slike uspješno preuzete.")
 
 # Pokreni funkciju prije pipeline-a
-pull_images_from_docker()
+#pull_images_from_docker()
 
 def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
     """
@@ -30,8 +41,9 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
     try:
         # 1. Detekcija objekata (Lovrin model)
         try:
+            image = cv2.imread(image_path)
             print(f"Pokrećem process_image za: {image_path}")
-            detection_results = process_image(image_path)
+            detection_results = process_image(image)
             print("Rezultat detekcije objekata:", detection_results)
         except Exception as e:
             print(f"Greška u process_image: {e}")
@@ -39,15 +51,26 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
 
 
         # 2. OCR prepoznavanje (Bartulov model s lokalnim direktorijem)
-        ocr_results = process_ocr(image_path, model_dir=ocr_model_dir)
-        print("ocr neki")
+        print("pocinjem s ocr")
+        
 
+        
+        instance = None
+        for det in detection_results:
+            if (det["class"]+1 == 2  or det["class"]+1 == 3 ):
+                instance = process_ocr(image, model_dir=ocr_model_dir)
+                break
         # 3. Analiza boja za klasu 1 (Lucijin dio)
         # Samo ako postoji klasa 1 među detekcijama
-        class1_color = None
+        
         for det in detection_results:
-            if det["class"] == 1:
-                class1_color = color(image_path, klasa=1)
+            if det["class"]+1 == 1:
+                instance = color(image, klasa=1)
+                break
+        height, width, channels = image.shape
+        for det in detection_results:
+            if det["class"]+1 == 5:
+                instance = classify_object(width, height)
                 break
 
         # Spajanje podataka prema klasi
@@ -55,15 +78,15 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
         for det in detection_results:
             result_entry = {
                 "timestamp": det["timestamp"],  # Vrijeme obrade
-                "class": det["class"],  # Klasa objekta
-                "instance": class1_color if det["class"] == 1 else "N/A",  # Samo za klasu 1
+                "class": det["class"]+1,  # Klasa objekta
+                "instance": instance,  # Samo za klasu 1
                 "centroid_x": det["cx"],
                 "centroid_y": det["cy"],
             }
             final_results.append(result_entry)
 
         # Generiranje CSV-a
-        with open(output_csv, 'w', newline='') as f:
+        with open(output_csv, 'a', newline='') as f:
             fieldnames = ["timestamp", "class", "instance", "centroid_x", "centroid_y"]
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
@@ -76,15 +99,29 @@ def merge_pipeline(image_path, txt_data, output_csv, ocr_model_dir):
 
 if __name__ == "__main__":
     print("Ulazak u main blok")
+    input_image_path = sys.argv[1]
+    print(input_image_path)
     # Putanje do ulaznih podataka
-    image_path = "local_images/class_2/number_2/img_0025.png"  # Pretpostavljam da Docker povuče slike ovdje
-    ocr_model_dir = "OCR/inference OCR model"  # Prilagoditi putanju
-    output_csv = "final_output.csv"
-
+    image_path = input_image_path  # Pretpostavljam da Docker povuče slike ovdje
+    ocr_model_dir = "OCR/inference OCR model v4"  # Prilagoditi putanju
+    output_csv = sys.argv[2]
+    #image_paths=["local_images/class_1/yellow/img_0006.png",
+     #            "local_images/class_2/number_2/img_0025.png",
+      #           "local_images/class_3/number_6/img_0012.png",
+       #          "local_images/class_4/img_0006.png",
+        #         "local_images/class_5/img_012.jpg",
+         #        "local_images/class_6/img_0006.jpg"]
     # Poziv funkcije merge_pipeline
+    #for image_path in image_paths:
+    #    merge_pipeline(
+    #        image_path=image_path,
+    #        txt_data=None,  # Pretpostavljam da txt_data nije potreban jer se oslanja na proces_image
+    #        ocr_model_dir=ocr_model_dir,
+    #        output_csv=output_csv
+    #    )
     merge_pipeline(
-        image_path=image_path,
-        txt_data=None,  # Pretpostavljam da txt_data nije potreban jer se oslanja na proces_image
-        ocr_model_dir=ocr_model_dir,
-        output_csv=output_csv
-    )
+            image_path=image_path,
+            txt_data=None,  # Pretpostavljam da txt_data nije potreban jer se oslanja na proces_image
+            ocr_model_dir=ocr_model_dir,
+            output_csv=output_csv
+        )
