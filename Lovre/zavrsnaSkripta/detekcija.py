@@ -2,8 +2,8 @@ from ultralytics import YOLO
 import time
 
 # Učitavanje YOLO modela iz .pt datoteke
-model_path = "cropNovi.pt"  # Putanja do vašeg modela
-model = YOLO(model_path)
+model = YOLO("Lovre/zavrsnaSkripta/cropNovi.pt")
+
 
 # Funkcija za obradu slike
 def process_image(image):
@@ -15,6 +15,7 @@ def process_image(image):
     # Detekcija objekata pomoću YOLO modela
     results = model.predict(source=image, conf=0.5, save=False)  # confidence threshold = 0.5
     detections = results[0].boxes  # Bounding boxes
+    print("Detections:", detections)
 
     output_data = []  # Lista za spremanje rezultata
 
