@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlanktoScope Extra Control</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .sub {
+      margin-bottom: 24px;
+      color: #4b5563;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 14px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .status.running {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.idle {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .row label {
+      min-width: 110px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    .row input {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .primary { background: #2563eb; color: white; }
+    .danger { background: #dc2626; color: white; }
+    .secondary { background: #111827; color: white; }
+    .muted { background: #e5e7eb; color: #111827; }
+
+    .message {
+      margin-top: 12px;
+      font-size: 14px;
+      min-height: 20px;
+      color: #1d4ed8;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <h1>PlanktoScope Extra Control</h1>
+      +
+    </div>
+    <div class="badge">GPIO mode: {{ gpio_mode }}</div>
+  </div>
+
+  <div class="grid">
+    {% for pump in pumps %}
+    <div class="card" id="card-{{ pump.name }}">
+      <h2>{{ pump.name|upper }}</h2>
+      <div class="meta">
+        GPIO pin: {{ pump.pin }}
+      </div>
+
+      <div class="status {% if pump.is_running %}running{% else %}idle{% endif %}" id="status-{{ pump.name }}">
+        {% if pump.is_running %}RUNNING{% else %}IDLE{% endif %}
+      </div>
+
+      <div class="row">
+        <label for="volume-{{ pump.name }}">Volumen (mL)</label>
+        <input type="number" step="0.01" min="0.01" id="volume-{{ pump.name }}" placeholder="npr. 10.5">
+      </div>
+
+      <div class="buttons">
+        <button class="primary" onclick="dispense('{{ pump.name }}')">Doziraj</button>
+        <button class="danger" onclick="stopPump('{{ pump.name }}')">Stop</button>
+      </div>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid #e5e7eb;">
+
+      <div class="row">
+        <label for="calibration-{{ pump.name }}">Kalibracija</label>
+        <input
+          type="number"
+          step="0.01"
+          min="0.01"
+          id="calibration-{{ pump.name }}"
+          value="{{ pump.calibration_ml_per_sec }}"
+        >
+      </div>
+
+      <div class="buttons">
+        <button class="secondary" onclick="saveCalibration('{{ pump.name }}')">Spremi kalibraciju</button>
+      </div>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid #e5e7eb;">
+
+      <div class="buttons">
+        <button class="muted" onclick="manualOn('{{ pump.name }}')">ON</button>
+        <button class="muted" onclick="manualOff('{{ pump.name }}')">OFF</button>
+      </div>
+
+      <div class="message" id="message-{{ pump.name }}"></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        headers: { "Content-Type": "application/json" },
+        ...options
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.detail || "Greška u zahtjevu");
+      }
+
+      return data;
+    }
+
+    function setMessage(pumpName, text, isError = false) {
+      const el = document.getElementById(`message-${pumpName}`);
+      el.textContent = text;
+      el.style.color = isError ? "#b91c1c" : "#1d4ed8";
+    }
+
+    function setStatus(pumpName, isRunning) {
+      const el = document.getElementById(`status-${pumpName}`);
+      el.textContent = isRunning ? "RUNNING" : "IDLE";
+      el.className = `status ${isRunning ? "running" : "idle"}`;
+    }
+
+    async function refreshPump(pumpName) {
+      try {
+        const data = await api(`/api/pumps/${pumpName}`);
+        setStatus(pumpName, data.is_running);
+        const calInput = document.getElementById(`calibration-${pumpName}`);
+        if (calInput) {
+          calInput.value = data.calibration_ml_per_sec;
+        }
+      } catch (err) {
+        setMessage(pumpName, err.message, true);
+      }
+    }
+
+    async function dispense(pumpName) {
+      const input = document.getElementById(`volume-${pumpName}`);
+      const volume = parseFloat(input.value);
+
+      if (!volume || volume <= 0) {
+        setMessage(pumpName, "Upiši ispravan volumen u mL.", true);
+        return;
+      }
+
+      try {
+        const data = await api(`/api/pumps/${pumpName}/dispense`, {
+          method: "POST",
+          body: JSON.stringify({ volume_ml: volume })
+        });
+
+        setMessage(
+          pumpName,
+          `Doziranje pokrenuto: ${data.volume_ml} mL, procjena ${data.estimated_duration_sec.toFixed(2)} s`
+        );
+        setStatus(pumpName, true);
+      } catch (err) {
+        setMessage(pumpName, err.message, true);
+      }
+    }
+
+    async function stopPump(pumpName) {
+      try {
+        const data = await api(`/api/pumps/${pumpName}/stop`, {
+          method: "POST"
+        });
+        setMessage(pumpName, data.message || "Zaustavljanje zatraženo");
+        setTimeout(() => refreshPump(pumpName), 300);
+      } catch (err) {
+        setMessage(pumpName, err.message, true);
+      }
+    }
+
+    async function saveCalibration(pumpName) {
+      const input = document.getElementById(`calibration-${pumpName}`);
+      const calibration = parseFloat(input.value);
+
+      if (!calibration || calibration <= 0) {
+        setMessage(pumpName, "Upiši ispravnu kalibraciju u mL/s.", true);
+        return;
+      }
+
+      try {
+        const data = await api(`/api/pumps/${pumpName}/calibration`, {
+          method: "POST",
+          body: JSON.stringify({ calibration_ml_per_sec: calibration })
+        });
+
+        setMessage(
+          pumpName,
+          `Kalibracija spremljena: ${data.calibration_ml_per_sec} mL/s`
+        );
+      } catch (err) {
+        setMessage(pumpName, err.message, true);
+      }
+    }
+
+    async function manualOn(pumpName) {
+      try {
+        await api(`/api/pumps/${pumpName}/on`, { method: "POST" });
+        setMessage(pumpName, "Pumpa uključena ručno.");
+        setStatus(pumpName, true);
+      } catch (err) {
+        setMessage(pumpName, err.message, true);
+      }
+    }
+
+    async function manualOff(pumpName) {
+      try {
+        await api(`/api/pumps/${pumpName}/off`, { method: "POST" });
+        setMessage(pumpName, "Pumpa isključena ručno.");
+        setStatus(pumpName, false);
+      } catch (err) {
+        setMessage(pumpName, err.message, true);
+      }
+    }
+
+    async function refreshAll() {
+      const cards = document.querySelectorAll("[id^='card-']");
+      for (const card of cards) {
+        const pumpName = card.id.replace("card-", "");
+        await refreshPump(pumpName);
+      }
+    }
+
+    setInterval(refreshAll, 2000);
+  </script>
+</body>
+</html>
